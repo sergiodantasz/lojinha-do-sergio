@@ -10,7 +10,7 @@ class Product(models.Model):
     image = models.ImageField(
         upload_to='products/%Y/%m/%d/', blank=True, verbose_name='Imagem'
     )
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True, verbose_name='Slug')
     marketing_price = models.FloatField(verbose_name='Preço de marketing')
     promotional_marketing_price = models.FloatField(
         default=0, verbose_name='Preço de marketing promocional'
@@ -32,3 +32,22 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    class Meta:
+        verbose_name = 'Produto'
+        verbose_name_plural = 'Produtos'
+
+
+class Variation(models.Model):
+    product = models.ForeignKey(Product, models.CASCADE, verbose_name='Produto')
+    name = models.CharField(max_length=255, blank=True, verbose_name='Nome')
+    price = models.FloatField(verbose_name='Preço')
+    promotional_price = models.FloatField(default=0, verbose_name='Preço promocional')
+    stock = models.PositiveIntegerField(default=1, verbose_name='Estoque')
+
+    def __str__(self) -> str:
+        return self.name or self.product.name
+
+    class Meta:
+        verbose_name = 'Variação'
+        verbose_name_plural = 'Variações'
