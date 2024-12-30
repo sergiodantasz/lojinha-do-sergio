@@ -10,6 +10,7 @@ env.read_env(BASE_DIR / '.env', True)
 
 SECRET_KEY = env.str('SECRET_KEY')
 DEBUG = env.bool('DEBUG')
+DEBUG_TOOLBAR = env.bool('DEBUG_TOOLBAR')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
 
 INSTALLED_APPS = [
@@ -89,3 +90,8 @@ MESSAGE_TAGS = {
     constants.SUCCESS: 'message-success',
     constants.WARNING: 'message-warning',
 }
+
+if DEBUG_TOOLBAR:
+    INSTALLED_APPS.append('debug_toolbar')
+    MIDDLEWARE.insert(0, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    INTERNAL_IPS = ['127.0.0.1']
